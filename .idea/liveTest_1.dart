@@ -1,27 +1,24 @@
 void main() {
-  List<Map<String, dynamic>> fruits = [
-    {"name": "Apple", "color": "Red", "price": 2.5},
-    {"name": "Banana", "color": "Yellow", "price": 1.0},
-    {"name": "Grapes", "color": "Purple", "price": 3.0}
+  List<Map<String, dynamic>> students = [
+    {"name": "Alice", "scores": [85, 90, 78]},
+    {"name": "Bob", "scores": [88, 76, 95]},
+    {"name": "Charlie", "scores": [90, 92, 85]}
   ];
-print("Original Fruit Details before Discount:");
-  displayFruitDetails(fruits);
 
-  applyPriceDiscount(fruits, 10);
-
-  print("\nFruit Details After Applying 10% Discount:");
-  displayFruitDetails(fruits);
-}
-
-void displayFruitDetails(List<Map<String, dynamic>> fruits) {
-  for (var fruit in fruits) {
-    print("Name: ${fruit['name']}, Color: ${fruit['color']}, Price: \$${fruit['price'].toStringAsFixed(2)}");
+  
+  Map<String, double> averages = {};
+  for (var student in students) {
+    List<int> scores = List<int>.from(student["scores"]);
+    double avg = scores.reduce((a, b) => a + b) / scores.length;
+    averages[student["name"]] = double.parse(avg.toStringAsFixed(2));
   }
-}
 
-void applyPriceDiscount(List<Map<String, dynamic>> fruits, double discountPercentage) {
-  double discountFactor = 1 - (discountPercentage / 100);
-  for (var fruit in fruits) {
-    fruit['price'] *= discountFactor;
-  }
+  var sortedEntries = averages.entries.toList()
+    ..sort((a, b) => b.value.compareTo(a.value));
+
+  Map<String, double> sortedAverages = {
+    for (var entry in sortedEntries) entry.key: entry.value
+  };
+
+  print(sortedAverages);
 }
